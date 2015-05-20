@@ -1,6 +1,7 @@
 __author__ = 'srodgers'
 from tkinter import *
 
+
 class FullScreenApp(object):
     def __init__(self, master, **kwargs):
         self.master=master
@@ -11,7 +12,7 @@ class FullScreenApp(object):
         master.bind('<Escape>',self.toggle_geom)
 
     def toggle_geom(self,event):
-        geom=self.master.winfo_geometry()
+        geom = self.master.winfo_geometry()
         print(geom,self._geom)
         self.master.geometry(self._geom)
         self._geom=geom
