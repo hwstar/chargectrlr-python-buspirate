@@ -3,6 +3,8 @@
 """
 Created by Sean Nelson on 2009-10-14.
 Copyright 2009 Sean Nelson <audiohacked@gmail.com>
+Converted to python3.4 by Steve Rodgers on 2015-05-19
+Copyright 2015 Steve Rodgers <steve-at-rodgers619-dot-com>
 
 This file is part of pyBusPirate.
 
