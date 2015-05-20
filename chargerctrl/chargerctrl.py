@@ -99,9 +99,9 @@ class chargerctrl :
 
     def cal_busy(self):
         self.send_command(6)
-        self._wait_ready();
+        self._wait_ready()
         result = self.read_response()
-        if(ord(result[0])):
+        if(result[0]):
             return True
         else:
             return False
