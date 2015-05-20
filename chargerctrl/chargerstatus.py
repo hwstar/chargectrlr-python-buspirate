@@ -213,7 +213,7 @@ class ChargerStatus():
         self.convivalue.configure(text = sensors['convma'])
         self.loadivalue.configure(text = sensors['loadma'])
         self.battivalue.configure(text = sensors['convma'] - sensors['loadma'])
-        self.convpvalue.configure(text = (sensors['convma'] * sensors['battmv']) / 1000)
+        self.convpvalue.configure(text = int((sensors['convma'] * sensors['battmv']) / 1000))
         self.convenergymwhvalue.configure(text = sensors['convenergymwh'])
         self.battchargemahvalue.configure(text = sensors['battchargemah'])
         self.battdischargemahvalue.configure(text = sensors['battdischargemah'])
