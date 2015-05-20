@@ -29,181 +29,204 @@ import time
 PICSPEED = 24MHZ / 16MIPS
 """
 
+
 class PinCfg:
-	POWER = 0x8
-	PULLUPS = 0x4
-	AUX = 0x2
-	CS = 0x1
+    POWER = 0x8
+    PULLUPS = 0x4
+    AUX = 0x2
+    CS = 0x1
+
 
 class BBIOPins:
-	# Bits are assigned as such:
-	MOSI = 0x01;
-	CLK = 0x02;
-	MISO = 0x04;
-	CS = 0x08;
-	AUX = 0x10;
-	PULLUP = 0x20;
-	POWER = 0x40;
+    # Bits are assigned as such:
+    MOSI = 0x01
+    CLK = 0x02
+    MISO = 0x04
+    CS = 0x08
+    AUX = 0x10
+    PULLUP = 0x20
+    POWER = 0x40
+
 
 class BBIO:
-	def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
-		self.port = serial.Serial(p, s, timeout=t)
-	
-	def BBmode(self):
-		if sys.platform == 'win32':
-			# I haven't seen this problem on Windows, which is good,
-			# because it doesn't appear to support select.select() 
-			# for serial ports.  This seems to work instead:
-			self.resetBP()
-			self.port.write("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")
-			self.timeout(0.1)
-			self.port.flushInput();
-			self.reset()
-		else:
-			# Sometimes sending 20 zeroes in a row to a BP already in binary mode
-			# leads to BP getting stuck in BitBang mode
-			# (see forum: http://dangerousprototypes.com/forum/viewtopic.php?t=1440#msg13179 )
-			# so if we detect a response (indicating we're in BitBang mode before the 20 zeroes)
-			# stop sending zeroes and go on.
-			self.port.flushInput();		
-			for i in range(20):
-				self.port.write("\x00");
-				r,w,e = select.select([self.port], [], [], 0.01);
-				if (r): break;
+    def __init__(self, p="/dev/bus_pirate", s=115200, t=1):
+        self.port = serial.Serial(p, s, timeout=t)
 
-		if self.response(5) == "BBIO1": return 1
-		else: return 0
+    def BBmode(self):
+        if sys.platform == 'win32':
+            # I haven't seen this problem on Windows, which is good,
+            # because it doesn't appear to support select.select()
+            # for serial ports.  This seems to work instead:
+            self.resetBP()
+            self.port.write(b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")
+            self.timeout(0.1)
+            self.port.flushInput()
+            self.reset()
+        else:
+            # Sometimes sending 20 zeroes in a row to a BP already in binary mode
+            # leads to BP getting stuck in BitBang mode
+            # (see forum: http://dangerousprototypes.com/forum/viewtopic.php?t=1440#msg13179 )
+            # so if we detect a response (indicating we're in BitBang mode before the 20 zeroes)
+            # stop sending zeroes and go on.
+            self.port.flushInput()
+            for i in range(20):
+                self.port.write(b"\x00")
+                r, w, e = select.select([self.port], [], [], 0.01)
+                if (r): break;
 
-	def reset(self):
-		self.port.write("\x00")
-		self.timeout(0.1)
+        if self.response(5) == b"BBIO1":
+            return 1
+        else:
+            return 0
 
-	def enter_SPI(self):
-		self.response(5)
-		self.port.write("\x01")
-		self.timeout(0.1)
-		if self.response(4) == "SPI1": return 1
-		else: return 0
+    def reset(self):
+        self.port.write(b"\x00")
+        self.timeout(0.1)
 
-	def enter_I2C(self):
-		self.port.write("\x02")
-		self.timeout(0.1)
-		if self.response(4) == "I2C1": return 1
-		else: return 0
+    def enter_SPI(self):
+        self.response(5)
+        self.port.write(b"\x01")
+        self.timeout(0.1)
+        if self.response(4) == b"SPI1":
+            return 1
+        else:
+            return 0
 
-	def enter_UART(self):
-		self.port.write("\x03")
-		self.timeout(0.1)
-		if self.response(4) == "ART1": return 1
-		else: return 0
-		
-	def enter_1wire(self):
-		self.port.write("\x04")
-		self.timeout(0.1)
-		if self.response(4) == "1W01": return 1
-		else: return 0
-		
-	def enter_rawwire(self):
-		self.port.write("\x05")
-		self.timeout(0.1)
-		if self.response(4) == "RAW1": return 1
-		else: return 0
-		
-	def resetBP(self):
-		self.reset()
-		self.port.write("\x0F")
-		self.timeout(0.1)
-		#self.port.read(2000)
-		self.port.flushInput()
-		return 1
+    def enter_I2C(self):
+        self.port.write(b"\x02")
+        self.timeout(0.1)
+        if self.response(4) == b"I2C1":
+            return 1
+        else:
+            return 0
 
-	def raw_cfg_pins(self, config):
-		self.port.write(chr(0x40 | config))
-		self.timeout(0.1)
-		return self.response(1)
+    def enter_UART(self):
+        self.port.write(b"\x03")
+        self.timeout(0.1)
+        if self.response(4) == b"ART1":
+            return 1
+        else:
+            return 0
 
-	def raw_set_pins(self, pins):
-		self.port.write(chr(0x80 | config))
-		self.timeout(0.1)
-		return self.response(1)
+    def enter_1wire(self):
+        self.port.write(b"\x04")
+        self.timeout(0.1)
+        if self.response(4) == b"1W01":
+            return 1
+        else:
+            return 0
 
-	def timeout(self, timeout=0.1):
-		time.sleep(timeout);
+    def enter_rawwire(self):
+        self.port.write(b"\x05")
+        self.timeout(0.1)
+        if self.response(4) == b"RAW1":
+            return 1
+        else:
+            return 0
 
-	def response(self, byte_count=1, return_data=False):
-		data = self.port.read(byte_count)
-		if byte_count == 1 and return_data == False:
-			if data == chr(0x01): return 1
-			else: return 0
-		else:
-			return data
+    def resetBP(self):
+        self.reset()
+        self.port.write(b"\x0F")
+        self.timeout(0.1)
+        # self.port.read(2000)
+        self.port.flushInput()
+        return 1
 
-	""" Self-Test """
-	def short_selftest(self):
-		self.port.write("\x10")
-		self.timeout(0.1)
-		return self.response(1, True)
+    def raw_cfg_pins(self, config):
+        self.port.write(bytes([0x40 | config]))
+        self.timeout(0.1)
+        return self.response(1)
 
-	def long_selftest(self):
-		self.port.write("\x11")
-		self.timeout(0.1)
-		return self.response(1, True)
+    def raw_set_pins(self, pins):
+        self.port.write(bytes([0x80 | config]))
+        self.timeout(0.1)
+        return self.response(1)
 
-	""" PWM """
-	def setup_PWM(self, prescaler, dutycycle, period):
-		self.port.write("\x12")
-		self.port.write(chr(prescaler))
-		self.port.write(chr((dutycycle>>8)&0xFF))
-		self.port.write(chr(dutycycle&0xFF))
-		self.port.write(chr((period>>8)&0xFF))
-		self.port.write(chr(period&0xFF))
-		self.timeout(0.1)
-		return self.response()
+    def timeout(self, timeout=0.1):
+        time.sleep(timeout)
 
-	def clear_PWM(self):
-		self.port.write("\x13")
-		self.timeout(0.1)
-		return self.response()
+    def response(self, byte_count=1, return_data=False):
+        data = self.port.read(byte_count)
+        if byte_count == 1 and return_data == False:
+            if data == bytes([0x01]):
+                return 1
+            else:
+                return 0
+        else:
+            return data
 
-	""" ADC """	
-	def ADC_measure(self):
-		self.port.write("\x14")
-		self.timeout(0.1)
-		return self.response(2, True)
+    """ Self-Test """
 
-	""" General Commands for Higher-Level Modes """
-	def mode_string(self):
-		self.port.write("\x01")
-		self.timeout(0.1)
-		return self.response()
+    def short_selftest(self):
+        self.port.write(b"\x10")
+        self.timeout(0.1)
+        return self.response(1, True)
 
-	def bulk_trans(self, byte_count=1, byte_string=None):
-		if byte_string == None: pass
-		self.port.write(chr(0x10 | (byte_count-1)))
-		#self.timeout(0.1)
-		for i in range(byte_count):
-			self.port.write(chr(byte_string[i]))
-			#self.timeout(0.1)
-		data = self.response(byte_count+1, True)
-		return data[1:]
+    def long_selftest(self):
+        self.port.write(b"\x11")
+        self.timeout(0.1)
+        return self.response(1, True)
 
-	def cfg_pins(self, pins=0):
-		self.port.write(chr(0x40 | pins))
-		self.timeout(0.1)
-		return self.response()
+    """ PWM """
 
-	def read_pins(self):
-		self.port.write("\x50")
-		self.timeout(0.1)
-		return self.response(1, True)
+    def setup_PWM(self, prescaler, dutycycle, period):
+        self.port.write(b"\x12")
+        self.port.write(bytes([prescaler]))
+        self.port.write(bytes([(dutycycle >> 8) & 0xFF]))
+        self.port.write(bytes([dutycycle & 0xFF]))
+        self.port.write(bytes([(period >> 8) & 0xFF]))
+        self.port.write(bytes([period & 0xFF]))
+        self.timeout(0.1)
+        return self.response()
 
-	def set_speed(self, spi_speed=0):
-		self.port.write(chr(0x60 | spi_speed))
-		self.timeout(0.1)
-		return self.response()
+    def clear_PWM(self):
+        self.port.write(b"\x13")
+        self.timeout(0.1)
+        return self.response()
 
-	def read_speed(self):
-		self.port.write("\x70")
-		self.timeout(0.1);
-		return self.response(1, True)
+    """ ADC """
+
+    def ADC_measure(self):
+        self.port.write(b"\x14")
+        self.timeout(0.1)
+        return self.response(2, True)
+
+    """ General Commands for Higher-Level Modes """
+
+    def mode_string(self):
+        self.port.write("\x01")
+        self.timeout(0.1)
+        return self.response()
+
+
+    def bulk_trans(self, byte_count=1, byte_string=None):
+        if byte_string == None: pass
+        self.port.write(bytes([0x10 | (byte_count - 1)]))  # self.timeout(0.1)
+        for i in range(byte_count):
+            self.port.write(bytes([byte_string[i]]))
+        #self.timeout(0.1)
+        data = self.response(byte_count + 1, True)
+        return data[1:]
+
+
+    def cfg_pins(self, pins=0):
+        self.port.write(bytes([0x40 | pins]))
+        self.timeout(0.1)
+        return self.response()
+
+
+    def read_pins(self):
+        self.port.write(b"\x50")
+        self.timeout(0.1)
+        return self.response(1, True)
+
+    def set_speed(self, spi_speed=0):
+        self.port.write(bytes([0x60 | spi_speed]))
+        self.timeout(0.1)
+        return self.response()
+
+    def read_speed(self):
+        self.port.write(b"\x70")
+        self.timeout(0.1)
+        return self.response(1, True)
 

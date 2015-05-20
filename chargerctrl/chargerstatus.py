@@ -1,6 +1,6 @@
 __author__ = 'srodgers'
 
-from Tkinter import *
+from tkinter import *
 
 class ChargerStatus():
     def __init__(self, master, cc):

@@ -40,27 +40,27 @@ class I2C(BBIO):
 		BBIO.__init__(self, port, speed, timeout)
 
 	def send_start_bit(self):
-		self.port.write("\x02")
+		self.port.write(b"\x02")
 		#self.timeout(0.1)
 		return self.response()
 	
 	def send_stop_bit(self):
-		self.port.write("\x03")
+		self.port.write(b"\x03")
 		#self.timeout(0.1)
 		return self.response()
 		
 	def read_byte(self):
-		self.port.write("\x04")
+		self.port.write(b"\x04")
 		#self.timeout(0.1)
 		return self.response(1, True)
 		
 	def send_ack(self):
-		self.port.write("\x06")
+		self.port.write(b"\x06")
 		#self.timeout(0.1)
 		return self.response()
 		
 	def send_nack(self):
-		self.port.write("\x07")
+		self.port.write(b"\x07")
 		#self.timeout(0.1)
 		return self.response()
 

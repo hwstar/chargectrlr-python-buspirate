@@ -1,5 +1,5 @@
 __author__ = 'srodgers'
-from Tkinter import *
+from tkinter import *
 
 class FullScreenApp(object):
     def __init__(self, master, **kwargs):

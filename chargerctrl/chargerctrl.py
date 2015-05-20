@@ -39,17 +39,17 @@ class chargerctrl :
         stat = self.i2c.bulk_trans(2, [self.addr << 1, command])
         self.i2c.send_stop_bit()
         if stat[0] == chr(0x01):
-            raise IOError, "I2C write command on address 0x%02x not acknowledged!"%(self.addr)
+            raise IOError("I2C write command on address 0x%02x not acknowledged!" % (self.addr))
 
 
     # Return a string containing the i2c response bytes
 
     def read_response(self):
-        result = ''
+        result = b''
         self.i2c.send_start_bit()
         stat = self.i2c.bulk_trans(1, [self.addr << 1 | 1])
         if stat[0] == chr(0x01):
-            raise IOError, "I2C read command on address 0x%02x not acknowledged!"%(self.addr)
+            raise IOError("I2C read command on address 0x%02x not acknowledged!" % (self.addr))
         command = ord(self.i2c.read_byte())
         self.i2c.send_ack()
         length = ord(self.i2c.read_byte())
