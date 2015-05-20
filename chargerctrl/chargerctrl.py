@@ -134,12 +134,12 @@ class chargerctrl :
     def get_conv_info(self):
         info = {}
         fields = 'state','servocurrentstate','pwm','pwmmaxpower','calibrate',\
-                 'maxpower','tempoffset','endbulkmv','endabsorbmv','gassingmv','floatholdmv'
+                 'maxpower','tempoffset','endbulkmv','endabsorbmv','gassingmv','floatholdmv','maxpowermv','fgload'
 
         self.send_command(12)
         self._wait_ready()
         response = self.read_response()
-        values = struct.unpack('<BBBBBIhHHHH', response)
+        values = struct.unpack('<BBBBBIhHHHHHH', response)
         result = dict(zip(fields, values))
         return result
 

@@ -108,6 +108,15 @@ class ChargerStatus():
         self.scanpwmlabel = Label(self.sframe, text = 'Scan PWM')
         self.scanpwmvalue = Label(self.sframe, text = '0',padx = 2, pady = 2, relief = SUNKEN, width = 5)
 
+        self.maxpowermvlabel = Label(self.sframe, text = 'Voltage at Pmax')
+        self.maxpowermvvalue = Label(self.sframe, text = '0',padx = 2, pady = 2, relief = SUNKEN, width = 5)
+        self.maxpowermvunits = Label(self.sframe, text = 'mV')
+
+        self.fgloadlabel = Label(self.sframe, text = 'Foreground load')
+        self.fgloadvalue = Label(self.sframe, text = '0',padx = 2, pady = 2, relief = SUNKEN, width = 5)
+        self.fgloadunits = Label(self.sframe, text = 'Ticks')
+
+
 
 
 
@@ -186,6 +195,14 @@ class ChargerStatus():
         self.scanpwmlabel.grid(row = 8, column = 4, sticky = W)
         self.scanpwmvalue.grid(row = 8, column = 5, sticky = W)
 
+        self.maxpowermvlabel.grid(row = 9, column = 0, sticky = W)
+        self.maxpowermvvalue.grid(row = 9, column = 1, sticky = W)
+        self.maxpowermvunits.grid(row = 9, column = 2, sticky = W)
+
+        self.fgloadlabel.grid(row = 9, column = 4, sticky = W)
+        self.fgloadvalue.grid(row = 9, column = 5, sticky = W)
+        self.fgloadunits.grid(row = 9, column = 6, sticky = W)
+
         self.update_values()
 
     def update_values(self):
@@ -210,6 +227,8 @@ class ChargerStatus():
         self.floatvvalue.configure(text = info['floatholdmv'])
         self.tempoffsetvvalue.configure(text = info['tempoffset'])
         self.scanpwmvalue.configure(text = info['pwmmaxpower'])
+        self.maxpowermvvalue.configure(text = info['maxpowermv'])
+        self.fgloadvalue.configure(text = info['fgload'])
         self.sframe.after(250, self.update_values)
 
     def quit(self):
