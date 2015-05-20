@@ -12,7 +12,6 @@ if __name__ == '__main__':
     root = Tk()
     app=FullScreenApp(root)
 
-    addr = 0x08
     i2c = I2C("/dev/ttyUSB1", 115200)
     print ("Entering binmode: ", end='')
     if i2c.BBmode():
