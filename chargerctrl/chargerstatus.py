@@ -22,7 +22,7 @@ class ChargerStatus(Dialog):
             ('battdischargemah', {'text' : 'Battery Discharge', 'units': 'mAh', 'sensor': 'battdischargemah'}),
             ('convs', {'text' : 'Converter State', 'units': '', 'info': 'state'}),
             ('convpwm', {'text' : 'Converter PWM', 'units': '', 'info': 'pwm'}),
-            ('battemp', {'text' : 'Battery Temperature', 'units': 'degK', 'sensor': 'battemp'}),
+            ('battemp', {'text' : 'Battery Temperature', 'units': u'\N{DEGREE SIGN}K', 'sensor': 'battemp'}),
             ('scanpower', {'text' : 'Scan Power', 'units': 'mW', 'info': 'maxpower'}),
             ('endbulkmv', {'text' : 'End Bulk Voltage', 'units': 'mV', 'info': 'endbulkmv'}),
             ('endabsorbmv', {'text' : 'End Absorb Voltage', 'units': 'mV', 'info': 'endabsorbmv'}),
@@ -36,6 +36,37 @@ class ChargerStatus(Dialog):
 
         self.master = master
         Dialog.__init__(self, master, "Charger Status")
+
+    def buttonbox(self):
+        # add standard button box. override if you don't want the
+        # standard buttons
+
+        box = Frame(self)
+
+        w = Button(box, text="Close", width=10, command=self.close, default=ACTIVE)
+        w.pack(side=LEFT, padx=5, pady=5)
+
+        self.bind("<Return>", self.close)
+        self.bind("<Escape>", self.close)
+
+        box.pack()
+
+
+    def close(self):
+
+        self.withdraw()
+        self.update_idletasks()
+
+        self.apply()
+
+        self.cancel()
+
+
+    def cancel(self, event=None):
+        self.after_cancel(self.job)
+        # put focus back to the parent window
+        self.parent.focus_set()
+        self.destroy()
 
 
 
@@ -93,7 +124,7 @@ class ChargerStatus(Dialog):
                         # Special case for battery current
                         self.fields[item]['valueobj'].configure(text = (sensors['convma'] - sensors['loadma']))
 
-        self.master.after(250, self.update_values)
+        self.job = self.master.after(250, self.update_values)
 
 
 
