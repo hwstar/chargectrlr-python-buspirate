@@ -2,13 +2,17 @@ __author__ = 'srodgers'
 
 from tkinter import *
 
+
+
+
 class ChargerStatus():
     def __init__(self, master, cc):
         self.cc = cc
-
+        self.master = master
         self.subwin = Toplevel(master)
         self.subwin.title("Charger Status")
         self.subwin.lift(aboveThis=master)
+
 
         self.mframe = Frame(self.subwin)
         self.mframe.pack()
@@ -204,6 +208,7 @@ class ChargerStatus():
         self.fgloadunits.grid(row = 9, column = 6, sticky = W)
 
         self.update_values()
+
 
     def update_values(self):
         sensors = self.cc.get_sensors()

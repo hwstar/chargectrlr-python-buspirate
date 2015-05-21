@@ -4,15 +4,24 @@ from chargerctrl.I2C import *
 from chargerctrl.chargerctrl import *
 from chargerctrl.chargerstatus import *
 from chargerctrl.fullscreen import *
-from time import *
+from chargerctrl.serialselect import *
+from chargerctrl.Dialog import *
 from tkinter import *
+
+
+import os
+
 
 if __name__ == '__main__':
 
     root = Tk()
     app=FullScreenApp(root)
 
-    i2c = I2C("/dev/ttyUSB1", 115200)
+    ss = SerialSelect(root,'Select Serial Port', udevportname='buspirate')
+    port = ss.port()
+
+
+    i2c = I2C(port, 115200)
     print ("Entering binmode: ", end='')
     if i2c.BBmode():
         print ("OK.")
@@ -33,9 +42,11 @@ if __name__ == '__main__':
         raise IOError("Failed to set I2C Speed.")
     i2c.timeout(0.2)
 
+
     cc = chargerctrl(i2c)
 
     cs = ChargerStatus(root, cc)
+
 
     root.mainloop()
 
