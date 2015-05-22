@@ -9,6 +9,7 @@ from chargerctrl.chargerctrl import *
 from chargerctrl.chargerstatus import *
 from chargerctrl.fullscreen import *
 from chargerctrl.serialselect import *
+from chargerctrl.CalWizard import *
 
 
 port = None
@@ -63,7 +64,8 @@ def viewChargerStatus():
 # Run calibration
 
 def runCalibration():
-    pass;
+    wiz = CalWizard(root, "Calibration")
+
 
 if __name__ == '__main__':
 
