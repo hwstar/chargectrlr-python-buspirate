@@ -14,6 +14,7 @@ from chargerctrl.serialselect import *
 port = None
 i2c = None
 cc = None
+root = None
 
 #
 # Select the serial port
@@ -54,6 +55,7 @@ def setSerial():
 # Show charger status
 
 def viewChargerStatus():
+    global root
     cs = ChargerStatus(root, cc)
 
 
