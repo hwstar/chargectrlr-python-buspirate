@@ -4,11 +4,12 @@ __author__ = 'srodgers'
 import tkinter.messagebox
 
 from chargerctrl.I2C import *
-from chargerctrl.chargerctrl import *
-from chargerctrl.chargerstatus import *
-from chargerctrl.fullscreen import *
-from chargerctrl.serialselect import *
+from chargerctrl.ChargerCtrl import *
+from chargerctrl.ChargerStatus import *
+from chargerctrl.FullScreen import *
+from chargerctrl.SerialSelect import *
 from chargerctrl.CalWizard import *
+from chargerctrl.LoadEnableDialog import *
 
 
 port = None
@@ -65,6 +66,11 @@ def viewChargerStatus():
 def runCalibration():
     wiz = CalWizard(root, cc, "Calibration")
 
+#
+# Enable/Disable load
+
+def enableDisableLoad():
+    led = LoadEnableDialog(root, cc, "Load Enable")
 
 if __name__ == '__main__':
 
@@ -84,9 +90,10 @@ if __name__ == '__main__':
     viewmenu.add_command(label="View Charger Status", command=viewChargerStatus)
     menubar.add_cascade(label="View", menu=viewmenu)
 
-    runmenu = Menu(menubar, tearoff = 0)
-    runmenu.add_command(label="Perform Calibration", command=runCalibration)
-    menubar.add_cascade(label="Run", menu=runmenu)
+    actionmenu = Menu(menubar, tearoff = 0)
+    actionmenu.add_command(label="Enable/Disable Load", command=enableDisableLoad)
+    actionmenu.add_command(label="Perform Calibration", command=runCalibration)
+    menubar.add_cascade(label="Action", menu=actionmenu)
     # display the menu
     root.config(menu=menubar)
 

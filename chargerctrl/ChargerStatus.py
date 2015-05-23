@@ -7,7 +7,7 @@ from .Dialog import *
 
 
 class ChargerStatus(Dialog):
-    def __init__(self, master, cc):
+    def __init__(self, master, cc, title="Charger Status", xoffset=50, yoffset=50):
         self.cc = cc
         self.fields = OrderedDict([
             ('pv', {'text': 'PV Voltage', 'units': 'mV', 'sensor' : 'pvmv'}),
@@ -34,7 +34,7 @@ class ChargerStatus(Dialog):
         ])
 
         self.master = master
-        Dialog.__init__(self, master, "Charger Status")
+        Dialog.__init__(self, master, title = title, xoffset=xoffset, yoffset=yoffset)
 
     def buttonbox(self):
         # add standard button box. override if you don't want the

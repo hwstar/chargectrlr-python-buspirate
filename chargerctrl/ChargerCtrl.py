@@ -151,3 +151,19 @@ class chargerctrl :
 
     def reset_discharge(self):
         self.send_command(15)
+
+    def enable_load(self):
+        self.send_command(8)
+
+    def disable_load(self):
+        self.send_command(9)
+
+    def get_load_enable_state(self):
+        self.send_command(16)
+        self._wait_ready()
+        result = self.read_response()
+        if(result[0]):
+            return True
+        else:
+            return False
+
