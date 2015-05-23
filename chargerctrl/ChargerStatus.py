@@ -42,14 +42,31 @@ class ChargerStatus(Dialog):
 
         box = Frame(self)
 
-        w = Button(box, text="Close", width=10, command=self.close, default=ACTIVE)
-        w.pack(side=LEFT, padx=5, pady=5)
+        self.closebutt = Button(box, text="Close", width=10, command=self.close, default=ACTIVE)
+        self.closebutt.grid(row=0, column=0, padx=5, pady=5)
+        self.resetconvebutt = Button(box, text="Reset Energy", width=10, command=self.resetconve)
+        self.resetconvebutt.grid(row=0, column=1, padx=5, pady=5)
+        self.resetbattc = Button(box, text="Reset Charge", width=10, command=self.resetbattc)
+        self.resetbattc.grid(row=1, column=0, padx=5, pady=5)
+        self.resetbattd = Button(box, text="Reset Discharge", width=10, command=self.resetbattd)
+        self.resetbattd.grid(row=1, column=1, padx=5, pady=5)
+
 
         self.bind("<Return>", self.close)
         self.bind("<Escape>", self.close)
 
         box.pack()
 
+
+    def resetconve(self):
+        self.cc.reset_energy()
+
+
+    def resetbattc(self):
+        self.cc.reset_charge()
+
+    def resetbattd(self):
+        self.cc.reset_discharge()
 
     def close(self):
 
@@ -92,9 +109,9 @@ class ChargerStatus(Dialog):
         for index, item in enumerate(self.fields):
             columnbase = ((index & 1) << 2) + 1
             row = index >> 1
-            print(columnbase)
-            print(row)
-            print()
+            #print(columnbase)
+            #print(row)
+            #print()
             self.fields[item]['labelobj'].grid(row = row, column = columnbase, sticky = W)
             self.fields[item]['valueobj'].grid(row = row, column = columnbase + 1, sticky = W)
             if(len(self.fields[item]['units'])):

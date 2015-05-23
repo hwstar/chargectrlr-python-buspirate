@@ -9,11 +9,11 @@ from .Dialog import *
 
 class SerialSelect(Dialog):
 
-    def __init__(self, parent, title=None, udevportname=''):
+    def __init__(self, parent, title="Select Serial Port", udevportname='', xoffset=50, yoffset=50):
         self.sindex=None
         self.udevportname = udevportname
         self.ports= self._serial_ports(udevportname)
-        Dialog.__init__(self, parent, title)
+        Dialog.__init__(self, parent, title=title, xoffset=xoffset, yoffset=yoffset)
 
     def body(self, master):
         self.rbvar = IntVar()

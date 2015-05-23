@@ -6,12 +6,12 @@ from .Wizard import *
 class CalWizard(Wizard):
     #
     # Constructor
-    def __init__(self, parent, cc, title=None,xoffsetfromroot=50, yoffsetfromroot=50):
+    def __init__(self, parent, cc, title=None,xoffset=50, yoffset=50):
         self.cc = cc
         self.didpvcal = False
         self.didbattcal = False
         self.calerror = False
-        Wizard.__init__(self, parent, title=title, xoffsetfromroot = xoffsetfromroot, yoffsetfromroot = yoffsetfromroot)
+        Wizard.__init__(self, parent, title=title, xoffset = xoffset, yoffset = yoffset)
 
     #
     # Cancel and return control to parent
@@ -21,7 +21,7 @@ class CalWizard(Wizard):
 
     #
     # Draw pages
-    def drawpageframes(self, master):
+    def body(self, master):
         self.page1 = Frame(master)
         Label(self.page1, text='1.Connect the Bus Pirate I2C leads to the Arduino.').pack(anchor = W)
         Label(self.page1, text='2.Connect the charge controller to a 6 volt calibration source.').pack(anchor = W)
@@ -68,7 +68,7 @@ class CalWizard(Wizard):
     #
     # Draw the button box frame
 
-    def drawbuttonframe(self):
+    def buttonbox(self):
         # add standard button box. override if you don't want the
         # standard buttons
 

@@ -1,44 +1,17 @@
 __author__ = 'srodgers'
 
-from tkinter import *
+from .Dialog import *
 
 
-class Wizard(Toplevel):
-    def __init__(self, parent, title=None,xoffsetfromroot=50, yoffsetfromroot=50):
-        Toplevel.__init__(self, parent)
-
+class Wizard(Dialog):
+    def __init__(self, parent, title=None, xoffset=50, yoffset=50):
         self.pagenames = None
+        Dialog.__init__(self, parent, title=title, xoffset=xoffset, yoffset=yoffset)
 
-        self.transient(parent)
-        if title:
-            self.title(title)
+    #
+    # Draw wizard body
 
-        self.parent = parent
-
-        body = Frame(self)
-        self.initial_focus = self.drawpageframes(body)
-
-
-        body.pack(padx=5, pady=5)
-
-        self.drawbuttonframe()
-
-        self.grab_set()
-
-        if not self.initial_focus:
-            self.initial_focus = self
-
-        self.protocol("WM_DELETE_WINDOW", self.cancel)
-
-        self.geometry("+%d+%d" % (parent.winfo_rootx() + xoffsetfromroot, parent.winfo_rooty() + yoffsetfromroot))
-
-        self.initial_focus.focus_set()
-
-        self.wait_window(self)
-
-
-
-    def drawpageframes(self, master):
+    def body(self, master):
         # Example only. Meant to be overridden!
         self.page1 = Frame(master)
         Label(self.page1, text='This is page 1 of the wizard').pack()
@@ -58,7 +31,7 @@ class Wizard(Toplevel):
     #
     # Draw the button box frame
 
-    def drawbuttonframe(self):
+    def buttonbox(self):
         # add standard button box. override if you don't want the
         # standard buttons
 

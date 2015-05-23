@@ -26,7 +26,7 @@ def setSerial():
     global cc
 
     while(True):
-        ss = SerialSelect(root, 'Select Serial Port', udevportname='buspirate')
+        ss = SerialSelect(root, title = 'Select Serial Port', udevportname='buspirate', xoffset=200, yoffset=200)
         port = ss.port()
         if(port is not None):
             break
@@ -57,20 +57,20 @@ def setSerial():
 
 def viewChargerStatus():
     global root
-    cs = ChargerStatus(root, cc)
+    cs = ChargerStatus(root, cc, xoffset=200, yoffset=200)
 
 
 #
 # Run calibration
 
 def runCalibration():
-    wiz = CalWizard(root, cc, "Calibration")
+    wiz = CalWizard(root, cc, title="Calibration", xoffset=200, yoffset=200)
 
 #
 # Enable/Disable load
 
 def enableDisableLoad():
-    led = LoadEnableDialog(root, cc, "Load Enable")
+    led = LoadEnableDialog(root, cc, title="Load Enable", xoffset=200, yoffset=200)
 
 if __name__ == '__main__':
 
