@@ -1,8 +1,6 @@
 __author__ = 'srodgers'
 
-from tkinter import *
 from .Wizard import *
-from .chargerctrl import *
 
 
 class CalWizard(Wizard):

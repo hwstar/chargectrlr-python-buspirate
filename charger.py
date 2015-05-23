@@ -1,7 +1,5 @@
 __author__ = 'srodgers'
 
-import tkinter.ttk as ttk
-from tkinter import *
 import tkinter.messagebox
 
 from chargerctrl.I2C import *

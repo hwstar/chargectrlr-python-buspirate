@@ -1,7 +1,6 @@
 __author__ = 'srodgers'
 
 from collections import OrderedDict
-from tkinter import *
 from .Dialog import *
 
 
