@@ -16,6 +16,13 @@ port = None
 i2c = None
 cc = None
 root = None
+idInfo = None
+
+
+def fatalError(errorText):
+    tkinter.messagebox.showerror("Fatal Error", errorText)
+    sys.exit(1)
+
 
 #
 # Select the serial port
@@ -24,6 +31,7 @@ def setSerial():
     global port
     global i2c
     global cc
+    global idInfo
 
     while(True):
         ss = SerialSelect(root, title = 'Select Serial Port', udevportname='buspirate', xoffset=200, yoffset=200)
@@ -34,23 +42,27 @@ def setSerial():
     if i2c.BBmode():
         pass
     else:
-        tkinter.messagebox.showerror("Can't set binmode on Buspirate!")
-        sys.exit(1)
+        fatalError("Can't set binmode on Buspirate!")
+
     if i2c.enter_I2C():
         pass
     else:
-        tkinter.messagebox.showerror("Can't set raw mode on Buspirate!")
-        sys.exit(1)
-    print("Configuring I2C.")
+        fatalError("Can't set raw mode on Buspirate!")
+
     if not i2c.cfg_pins(I2CPins.POWER | I2CPins.PULLUPS):
-        tkinter.messagebox.showerror("Failed to set I2C peripherals on BusPirate!")
-        sys.exit(1)
+        fatalError("Failed to set I2C peripherals on BusPirate!")
+
     if not i2c.set_speed(I2CSpeed._50KHZ):
-        tkinter.messagebox.showerror("Can't set I2C speed on Buspirate!")
-        sys.exit(1)
+        fatalError("Can't set I2C speed on Buspirate!")
+
     i2c.timeout(0.2)
 
     cc = chargerctrl(i2c)
+    idInfo = cc.get_id_info()
+    if idInfo['designer'] != "HWSTAR" or idInfo['project'] != "66-000101":
+        fatalError("Project or designer ID doesn't match! Are you using the correct utility program for this board?")
+
+
 
 #
 # Show charger status

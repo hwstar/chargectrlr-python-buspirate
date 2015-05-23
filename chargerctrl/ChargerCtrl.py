@@ -167,3 +167,20 @@ class chargerctrl :
         else:
             return False
 
+    def get_id_info(self):
+        info = {}
+        fields = 'designer', 'project', 'minor_version', 'major_version'
+
+        self.send_command(255)
+        self._wait_ready()
+        response = self.read_response()
+        values = struct.unpack('<10s10sHH', response)
+        result = dict(zip(fields, values))
+        # Convert C string to python bytes
+        result['designer'] = result['designer'].split(b'\0',1)[0]
+        # Convert python bytes to python string
+        result['designer'] = result['designer'].decode('utf-8')
+        # Do the same for project field
+        result['project'] = result['project'].split(b'\0',1)[0]
+        result['project'] = result['project'].decode('utf-8')
+        return result
