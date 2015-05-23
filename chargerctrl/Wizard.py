@@ -18,7 +18,6 @@ class Wizard(Toplevel):
         body = Frame(self)
         self.initial_focus = self.drawpageframes(body)
 
-        self.drawmapframe()
 
         body.pack(padx=5, pady=5)
 
@@ -55,31 +54,6 @@ class Wizard(Toplevel):
         self.pages = [self.page1, self.page2, self.page3]
         self.current = self.page1
 
-    #
-    # Draw the wizard map frame which shows progress through the wizard
-
-    def drawmapframe(self):
-        m = Frame(self)
-        self.maplabels = []
-        for i in range(len(self.pages)):
-            if(self.pagenames is not None):
-                pn = self.pagenames[i]
-            else:
-                pn = str(i+1)
-            self.maplabels.append(Label(m, text=pn))
-            self.maplabels[i].grid(row = 0, column=i)
-        self.mapbg = self.maplabels[0].cget('bg')
-        i = self.pages.index(self.current)
-        self.updatemap(i, 'yellow')
-        m.pack()
-
-    #
-    # Update the wizard map
-
-    def updatemap(self, entry, color):
-        self.maplabels[entry].configure(background=color)
-
-        pass
 
     #
     # Draw the button box frame
@@ -90,13 +64,14 @@ class Wizard(Toplevel):
 
         box = Frame(self)
 
-        w = Button(box, text="Previous", width=10, command=self.prev, default=ACTIVE)
-        w.pack(side=LEFT, padx=5, pady=5)
-        w = Button(box, text="Next", width=10, command=self.next)
-        w.pack(side=LEFT, padx=5, pady=5)
+        self.prevbutton = Button(box, text="Previous", width=10, command=self.prev, default=ACTIVE)
+        self.prevbutton.pack(side=LEFT, padx=5, pady=5)
+        self.nextbutton = Button(box, text="Next", width=10, command=self.next)
+        self.nextbutton.pack(side=LEFT, padx=5, pady=5)
 
         self.bind("<Return>", self.next)
         self.bind("<Escape>", self.cancel)
+
 
         box.pack()
 
@@ -107,13 +82,10 @@ class Wizard(Toplevel):
         idx = self.pages.index(self.current) + dirn
         if not 0 <= idx < len(self.pages):
             return
-        i = self.pages.index(self.current)
-        self.updatemap(i, self.mapbg)
         self.current.pack_forget()
         self.current = self.pages[idx]
         self.current.pack(side=TOP)
-        i = self.pages.index(self.current)
-        self.updatemap(i, 'yellow')
+
 
     #
     # Move to the next page in the wizard

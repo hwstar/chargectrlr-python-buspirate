@@ -64,7 +64,7 @@ def viewChargerStatus():
 # Run calibration
 
 def runCalibration():
-    wiz = CalWizard(root, "Calibration")
+    wiz = CalWizard(root, cc, "Calibration")
 
 
 if __name__ == '__main__':
