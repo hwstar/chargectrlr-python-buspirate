@@ -22,6 +22,7 @@ class CalWizard(Wizard):
     #
     # Draw pages
     def body(self, master):
+        self.pagenames = ['Setup','PV Cal','BV Cal', 'EEPROM Write']
         self.page1 = Frame(master)
         Label(self.page1, text='1.Connect the Bus Pirate I2C leads to the Arduino.').pack(anchor = W)
         Label(self.page1, text='2.Connect the charge controller to a 6 volt calibration source.').pack(anchor = W)
@@ -99,7 +100,7 @@ class CalWizard(Wizard):
             else:
                 pn = str(i+1)
             self.maplabels.append(Label(m, text=pn))
-            self.maplabels[i].grid(row = 0, column=i)
+            self.maplabels[i].grid(row = 0, column=i, padx=10)
         self.mapbg = self.maplabels[0].cget('bg')
         i = self.pages.index(self.current)
         self.updatemap(i, 'yellow')
