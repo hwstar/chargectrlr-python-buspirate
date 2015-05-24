@@ -9,15 +9,20 @@ class SerialSelect(Dialog):
 
     def __init__(self, parent, title="Select Serial Port", udevportname='', xoffset=50, yoffset=50):
         self.sindex=0
+        self.rbuttons = []
         self.udevportname = udevportname
         self.ports= self._serial_ports(udevportname)
         Dialog.__init__(self, parent, title=title, xoffset=xoffset, yoffset=yoffset)
 
     def body(self, master):
         self.rbvar = IntVar()
+        selected = 0
+
         for index, port in enumerate(self.ports):
-            Radiobutton(master, text='', variable=self.rbvar, value=index, command=self._action).grid(row = index, column = 0)
-            Label(master, text=port).grid(row = index, column = 1)
+            self.rbuttons.append(Radiobutton(master, text=port, variable=self.rbvar, value=index, command=self._action, width=15).grid(row = index, column = 0))
+            if(port == '/dev/'+self.udevportname):
+                selected = index
+            self.rbvar.set(selected)
 
     def port(self):
         if(self.sindex != None):

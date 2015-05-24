@@ -167,6 +167,12 @@ class chargerctrl :
         else:
             return False
 
+    def enable_conv(self):
+        self.send_command(17)
+
+    def disable_conv(self):
+        self.send_command(18)
+
     def get_id_info(self):
         info = {}
         fields = 'designer', 'project', 'minor_version', 'major_version'

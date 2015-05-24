@@ -50,6 +50,14 @@ class ChargerStatus(Dialog):
         self.resetbattc.grid(row=1, column=0)
         self.resetbattd = Button(box, text="Reset Discharge", width=15, command=self.resetbattd)
         self.resetbattd.grid(row=1, column=1)
+        self.resetbattc = Button(box, text="Enable Conv", width=15, command=self.enableconv)
+        self.resetbattc.grid(row=2, column=0)
+        self.resetbattd = Button(box, text="Disable Conv", width=15, command=self.disableconv)
+        self.resetbattd.grid(row=2, column=1)
+        self.resetbattc = Button(box, text="Enable Load", width=15, command=self.enableload)
+        self.resetbattc.grid(row=3, column=0)
+        self.resetbattd = Button(box, text="Disable Load", width=15, command=self.disableload)
+        self.resetbattd.grid(row=3, column=1)
 
 
         self.bind("<Return>", self.close)
@@ -67,6 +75,18 @@ class ChargerStatus(Dialog):
 
     def resetbattd(self):
         self.cc.reset_discharge()
+
+    def enableconv(self):
+        self.cc.enable_conv()
+
+    def disableconv(self):
+        self.cc.disable_conv()
+
+    def enableload(self):
+        self.cc.enable_load()
+
+    def disableload(self):
+        self.cc.disable_load()
 
     def close(self):
 
