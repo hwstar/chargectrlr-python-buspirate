@@ -87,27 +87,17 @@ class ChargerStatus(Dialog):
 
 
     def body(self, master) :
-        master.columnconfigure(0, minsize = 20)
-        master.columnconfigure(1, minsize = 50)
-        master.columnconfigure(2, minsize = 20)
-        master.columnconfigure(3, minsize = 30)
-        master.columnconfigure(4, minsize = 20)
-        master.columnconfigure(5, minsize = 50)
-        master.columnconfigure(6, minsize = 20)
-        master.columnconfigure(7, minsize = 30)
-        master.columnconfigure(8, minsize = 20)
-
 
         # Create labels
         for item in self.fields:
-            self.fields[item]['labelobj'] = Label(master, text= self.fields[item]['text'])
-            self.fields[item]['valueobj'] = Label(master, text = '0', relief = SUNKEN, width = 5)
+            self.fields[item]['labelobj'] = Label(master, text= self.fields[item]['text'], width=16, anchor=W)
+            self.fields[item]['valueobj'] = Label(master, text = '0', relief = SUNKEN, width=5, anchor=E, background= 'white', foreground='black')
             if(len(self.fields[item]['units'])):
-                self.fields[item]['unitsobj'] = Label(master, text = self.fields[item]['units'])
+                self.fields[item]['unitsobj'] = Label(master, text = self.fields[item]['units'], width=10, anchor=W, padding="5 0 0 0")
 
         # Place labels on grid
         for index, item in enumerate(self.fields):
-            columnbase = ((index & 1) << 2) + 1
+            columnbase = ((index & 1) << 2)
             row = index >> 1
             #print(columnbase)
             #print(row)

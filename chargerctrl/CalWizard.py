@@ -24,13 +24,13 @@ class CalWizard(Wizard):
     def body(self, master):
         self.pagenames = ['Setup','PV Cal','BV Cal', 'EEPROM Write']
         self.page1 = Frame(master)
-        Label(self.page1, text='1.Connect the Bus Pirate I2C leads to the Arduino.').pack(anchor = W)
-        Label(self.page1, text='2.Connect the charge controller to a 6 volt calibration source.').pack(anchor = W)
+        Label(self.page1, text='1.Connect the Bus Pirate I2C leads to the Arduino.', borderwidth=15).pack(anchor = W)
+        Label(self.page1, text='2.Connect the charge controller to a 6 volt calibration source.', borderwidth=15 ).pack(anchor = W)
         self.page1.pack(side=TOP)
 
         self.page2 = Frame(master)
         self.page2text = Frame(self.page2)
-        Label(self.page2text, text='Press the calibrate button below to calibrate the PV voltage').pack(anchor = W)
+        Label(self.page2text, text='Press the calibrate button below to calibrate the PV voltage', borderwidth=15).pack(anchor = W)
         self.page2text.pack()
         self.page2button = Frame(self.page2)
         Button(self.page2text, text="Calibrate PV Voltage", command=self.calpv).pack()
@@ -39,7 +39,7 @@ class CalWizard(Wizard):
 
         self.page3 = Frame(master)
         self.page3text = Frame(self.page3)
-        Label(self.page3, text='Press the calibrate button below to calibrate the Battery voltage').pack(anchor = W)
+        Label(self.page3, text='Press the calibrate button below to calibrate the Battery voltage', borderwidth=15).pack(anchor = W)
         self.page3text.pack()
         self.page3button = Frame(self.page3)
         Button(self.page3, text="Calibrate Battery Voltage", command = self.calbatt).pack()
@@ -47,10 +47,10 @@ class CalWizard(Wizard):
 
         self.page4 = Frame(master)
         self.page4text = Frame(self.page4)
-        Label(self.page4text, text='PV calibration value').grid(row=0, column=0, sticky=W)
+        Label(self.page4text, text='PV calibration value', borderwidth=15).grid(row=0, column=0, sticky=W)
         self.pvlabelvalue = Label(self.page4text, text='0', relief = SUNKEN, width = 5)
         self.pvlabelvalue.grid(row=0, column=1, sticky=W)
-        Label(self.page4text, text='Battery calibration value').grid(row=1, column=0, sticky=W)
+        Label(self.page4text, text='Battery calibration value', borderwidth=15).grid(row=1, column=0, sticky=W)
         self.battlabelvalue = Label(self.page4text, text='0', relief = SUNKEN, width = 5)
         self.battlabelvalue.grid(row=1, column=1, sticky=W)
         Label(self.page4text, text='').grid(row=2, column=0, sticky=W)
@@ -99,8 +99,8 @@ class CalWizard(Wizard):
                 pn = self.pagenames[i]
             else:
                 pn = str(i+1)
-            self.maplabels.append(Label(m, text=pn))
-            self.maplabels[i].grid(row = 0, column=i, padx=10)
+            self.maplabels.append(Label(m, text=pn, padding="10 0 10 0", anchor=CENTER, borderwidth=3))
+            self.maplabels[i].grid(row = 0, column=i)
         self.mapbg = self.maplabels[0].cget('background')
         i = self.pages.index(self.current)
         self.updatemap(i, 'yellow')
@@ -133,13 +133,13 @@ class CalWizard(Wizard):
         elif self.pages[nextpage] is self.page4:
             self.nextbutton.config(state='disabled')
             if(self.calerror == False):
-                self.pvlabelvalue.configure(text = self.cal['pv'])
-                self.battlabelvalue.configure(text = self.cal['batt'])
+                self.pvlabelvalue.configure(text = self.cal['pv'], background= 'white', foreground='black')
+                self.battlabelvalue.configure(text = self.cal['batt'], background='white', foreground='black')
                 self.writeeeprombutton.config(state='normal')
 
             else:
-                self.pvlabelvalue.configure(text = 'error')
-                self.battlabelvalue.configure(text = 'error')
+                self.pvlabelvalue.configure(text = 'error', background='white', foreground='red')
+                self.battlabelvalue.configure(text = 'error', background='white', foreground='red')
                 self.writeeeprombutton.config(state='disabled')
 
         else:

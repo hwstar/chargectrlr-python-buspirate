@@ -2,24 +2,24 @@ __author__ = 'srodgers'
 from .Dialog import *
 
 class LoadEnableDialog(Dialog):
-    def __init__(self, parent, cc, title = None, xoffset = 50, yoffset = 50):
+    def __init__(self, parent, cc, title = None, xoffset=50, yoffset=50):
         self.cc = cc
         self.state = "NO"
-        Dialog.__init__(self, parent = parent, title=title, xoffset=xoffset, yoffset=yoffset)
+        Dialog.__init__(self, parent=parent, title=title, xoffset=xoffset, yoffset=yoffset)
 
     #
     # Dialog body
     def body(self, master):
-        self.legend = Label(master, text= "Load Enabled")
+        self.legend = Label(master, text="Load Enabled", width=20)
 
         if self.cc.get_load_enable_state():
             self.state = 'YES'
         else:
             self.state = 'NO'
 
-        self.field = Label(master, text = self.state, relief = SUNKEN, width = 3)
-        self.legend.grid(row=0, column=0, sticky = W)
-        self.field.grid(row=0, column=1, sticky = W)
+        self.field = Label(master, text = self.state, relief=SUNKEN, width=3, background= 'white', foreground='black')
+        self.legend.grid(row=0, column=0, sticky=W)
+        self.field.grid(row=0, column=1, sticky=W)
 
     #
     # Buttons
