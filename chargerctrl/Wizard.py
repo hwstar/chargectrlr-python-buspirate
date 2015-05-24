@@ -38,9 +38,9 @@ class Wizard(Dialog):
         box = Frame(self)
 
         self.prevbutton = Button(box, text="Previous", width=10, command=self.prev, default=ACTIVE)
-        self.prevbutton.pack(side=LEFT, padx=5, pady=5)
+        self.prevbutton.pack(side=LEFT)
         self.nextbutton = Button(box, text="Next", width=10, command=self.next)
-        self.nextbutton.pack(side=LEFT, padx=5, pady=5)
+        self.nextbutton.pack(side=LEFT)
 
         self.bind("<Return>", self.next)
         self.bind("<Escape>", self.cancel)

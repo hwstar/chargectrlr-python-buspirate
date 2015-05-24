@@ -42,14 +42,14 @@ class ChargerStatus(Dialog):
 
         box = Frame(self)
 
-        self.closebutt = Button(box, text="Close", width=10, command=self.close, default=ACTIVE)
-        self.closebutt.grid(row=0, column=0, padx=5, pady=5)
-        self.resetconvebutt = Button(box, text="Reset Energy", width=10, command=self.resetconve)
-        self.resetconvebutt.grid(row=0, column=1, padx=5, pady=5)
-        self.resetbattc = Button(box, text="Reset Charge", width=10, command=self.resetbattc)
-        self.resetbattc.grid(row=1, column=0, padx=5, pady=5)
-        self.resetbattd = Button(box, text="Reset Discharge", width=10, command=self.resetbattd)
-        self.resetbattd.grid(row=1, column=1, padx=5, pady=5)
+        self.closebutt = Button(box, text="Close", width=15, command=self.close, default=ACTIVE)
+        self.closebutt.grid(row=0, column=0)
+        self.resetconvebutt = Button(box, text="Reset Energy", width=15, command=self.resetconve)
+        self.resetconvebutt.grid(row=0, column=1)
+        self.resetbattc = Button(box, text="Reset Charge", width=15, command=self.resetbattc)
+        self.resetbattc.grid(row=1, column=0)
+        self.resetbattd = Button(box, text="Reset Discharge", width=15, command=self.resetbattd)
+        self.resetbattd.grid(row=1, column=1)
 
 
         self.bind("<Return>", self.close)
@@ -101,7 +101,7 @@ class ChargerStatus(Dialog):
         # Create labels
         for item in self.fields:
             self.fields[item]['labelobj'] = Label(master, text= self.fields[item]['text'])
-            self.fields[item]['valueobj'] = Label(master, text = '0', padx = 2, pady = 2, relief = SUNKEN, width = 5)
+            self.fields[item]['valueobj'] = Label(master, text = '0', relief = SUNKEN, width = 5)
             if(len(self.fields[item]['units'])):
                 self.fields[item]['unitsobj'] = Label(master, text = self.fields[item]['units'])
 

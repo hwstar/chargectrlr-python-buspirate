@@ -1,16 +1,14 @@
 __author__ = 'srodgers'
 
 import glob
-import sys
 import serial
-from tkinter import *
 from .Dialog import *
 
 
 class SerialSelect(Dialog):
 
     def __init__(self, parent, title="Select Serial Port", udevportname='', xoffset=50, yoffset=50):
-        self.sindex=None
+        self.sindex=0
         self.udevportname = udevportname
         self.ports= self._serial_ports(udevportname)
         Dialog.__init__(self, parent, title=title, xoffset=xoffset, yoffset=yoffset)

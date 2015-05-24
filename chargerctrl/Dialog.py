@@ -1,6 +1,7 @@
 __author__ = 'srodgers'
 
 from tkinter import *
+from tkinter.ttk import *
 
 
 class Dialog(Toplevel):

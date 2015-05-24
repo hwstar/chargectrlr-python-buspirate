@@ -17,7 +17,7 @@ class LoadEnableDialog(Dialog):
         else:
             self.state = 'NO'
 
-        self.field = Label(master, text = self.state, padx = 2, pady = 2, relief = SUNKEN, width = 5)
+        self.field = Label(master, text = self.state, relief = SUNKEN, width = 3)
         self.legend.grid(row=0, column=0, sticky = W)
         self.field.grid(row=0, column=1, sticky = W)
 
@@ -28,11 +28,11 @@ class LoadEnableDialog(Dialog):
         box = Frame(self)
 
         self.enabutton = Button(box, text="ENABLE", width=10, command=self.enable)
-        self.enabutton.pack(side=LEFT, padx=5, pady=5)
+        self.enabutton.pack(side=LEFT)
         self.disabutton = Button(box, text="DISABLE", width=10, command=self.disable, default=ACTIVE)
-        self.disabutton.pack(side=LEFT, padx=5, pady=5)
+        self.disabutton.pack(side=LEFT)
         self.disabutton = Button(box, text="CLOSE", width=10, command=self.cancel)
-        self.disabutton.pack(side=LEFT, padx=5, pady=5)
+        self.disabutton.pack(side=LEFT)
 
         self.bind("<Escape>", self.cancel)
 
