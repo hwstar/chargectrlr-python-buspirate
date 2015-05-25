@@ -9,6 +9,8 @@ from .Dialog import *
 class ChargerStatus(Dialog):
     def __init__(self, master, cc, title="Charger Status", xoffset=50, yoffset=50):
         self.cc = cc
+        self.eff_filt = 0
+        self.pvma_enabled = False
         self.fields = OrderedDict([
             ('pv', {'text': 'PV Voltage', 'units': 'mV', 'sensor' : 'pvmv'}),
             ('battv', {'text': 'Battery Voltage', 'units': 'mV', 'sensor' : 'battmv'}),
@@ -30,7 +32,11 @@ class ChargerStatus(Dialog):
             ('tempoffset', {'text' : 'Temperature Offset', 'units': 'mV', 'info': 'tempoffset'}),
             ('scanpwm', {'text' : 'Scan PWM', 'units': '', 'info': 'pwmmaxpower'}),
             ('scanvoltage', {'text' : 'Scan Voltage', 'units': 'mV', 'info': 'maxpowermv'}),
-            ('fgload', {'text' : 'Foreground Load', 'units': 'Ticks', 'info': 'fgload'})
+            ('fgload', {'text' : 'Foreground Load', 'units': 'Ticks', 'info': 'fgload'}),
+            ('pvma', {'text' : 'PV Current', 'units': 'mA', 'sensor': 'specialcase'}),
+            ('pvpower', {'text' : 'PV Power', 'units': 'mW', 'sensor': 'specialcase'}),
+            ('conveff', {'text' : 'Conv Efficiency', 'units': '%', 'sensor': 'specialcase'})
+
         ])
 
         self.master = master
@@ -58,6 +64,10 @@ class ChargerStatus(Dialog):
         self.resetbattc.grid(row=3, column=0)
         self.resetbattd = Button(box, text="Disable Load", width=15, command=self.disableload)
         self.resetbattd.grid(row=3, column=1)
+        self.setpvma = Button(box, text="Enable PV Ma", width=15, command=self.enablepvma)
+        self.setpvma.grid(row=4, column=0)
+        self.resetpvma = Button(box, text="Disable PV mA", width=15, command=self.disablepvma)
+        self.resetpvma.grid(row=4, column=1)
 
 
         self.bind("<Return>", self.close)
@@ -87,6 +97,12 @@ class ChargerStatus(Dialog):
 
     def disableload(self):
         self.cc.disable_load()
+
+    def enablepvma(self):
+        self.pvma_enabled = True
+
+    def disablepvma(self):
+        self.pvma_enabled = False
 
     def close(self):
 
@@ -149,6 +165,30 @@ class ChargerStatus(Dialog):
                     elif(item == 'batti'):
                         # Special case for battery current
                         self.fields[item]['valueobj'].configure(text = (sensors['convma'] - sensors['loadma']))
+                    elif(item == 'pvma'):
+                        # Special case for pv current
+                        if(self.pvma_enabled):
+                            pvma = sensors['pvma']
+                        else:
+                            pvma = 'N/A'
+                        self.fields[item]['valueobj'].configure(text = pvma)
+                    elif(item == 'pvpower'):
+                        # Special case for converter power
+                        if(self.pvma_enabled):
+                            powerin = int((sensors['pvma'] * sensors['pvmv'])/1000)
+                        else:
+                            powerin = 'N/A'
+                        self.fields[item]['valueobj'].configure(text = powerin)
+                    elif(item == 'conveff'):
+                        powerin = int((sensors['pvma'] * sensors['pvmv'])/1000)
+                        powerout = int((sensors['convma'] * sensors['battmv'])/1000)
+                        if(powerin > 0 and self.pvma_enabled):
+                            eff_raw = int((powerout/powerin)*100)
+                            self.eff_filt = int(((self.eff_filt*3)+eff_raw)/4)
+                            eff = self.eff_filt
+                        else:
+                            eff = 'N/A'
+                        self.fields[item]['valueobj'].configure(text = eff)
 
         self.job = self.master.after(250, self.update_values)
 

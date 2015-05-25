@@ -122,11 +122,11 @@ class chargerctrl :
 
     def get_sensors(self):
 
-        fields = 'pvmv','battmv','convma','loadma','battemp','convenergymwh','battchargemah','battdischargemah'
+        fields = 'pvmv','battmv','convma','loadma','battemp','convenergymwh','battchargemah','battdischargemah', 'pvma'
         self.send_command(10)
         self._wait_ready()
         response = self.read_response()
-        values = struct.unpack('<HHHHHHHH', response)
+        values = struct.unpack('<HHHHHHHHH', response)
         result = dict(zip(fields, values))
         return result
 
