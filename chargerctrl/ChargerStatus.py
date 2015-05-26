@@ -186,6 +186,8 @@ class ChargerStatus(Dialog):
                             eff_raw = int((powerout/powerin)*100)
                             self.eff_filt = int(((self.eff_filt*3)+eff_raw)/4)
                             eff = self.eff_filt
+                            if(eff > 95):
+                                eff = 95
                         else:
                             eff = 'N/A'
                         self.fields[item]['valueobj'].configure(text = eff)
