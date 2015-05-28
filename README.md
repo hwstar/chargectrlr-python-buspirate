@@ -17,7 +17,7 @@ This program has been tested on Linux. No testing has been done for Windows.
 **Screenshot of Charge Controller variables**
 
 
-![ProjectScreenshot](Parameters.jpg)
+![ProjectScreenshot](Parameters.png)
 
 **Licence**
 
