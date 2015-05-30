@@ -4,7 +4,7 @@
 
 **Introduction**
 
-This is a simple python/tkinter utility for viewing variables on my 6volt-5W-solar-cc project using a Bus Pirate and 
+This is a simple python/tkinter utility for viewing variables on my [6volt-5W-solar-cc project](https://github.com/hwstar/6volt-5W-solar-cc) using a Bus Pirate and 
 connected to the i2c interface on the Arduino. This utility retrieves key charge controller variables and updates the 
 status window 5 times per second.
 
